@@ -4,6 +4,12 @@ import { prisma } from './lib/prisma'
 
 export const app = fastify()
 
+app.get('/users', async () => {
+  const users = await prisma.user.findMany()
+
+  return { users }
+})
+
 app.post('/users', async (request, reply) => {
   const createUserSchema = z.object({
     name: z.string(),
