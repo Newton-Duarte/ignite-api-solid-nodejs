@@ -1,5 +1,5 @@
 import { Gym, Prisma } from '@prisma/client'
-import { GymsRepository } from '../gyms-repository'
+import { GymsRepository, SearchManyParams } from '../gyms-repository'
 import { randomUUID } from 'node:crypto'
 
 export class InMemoryGymsRepository implements GymsRepository {
@@ -9,6 +9,12 @@ export class InMemoryGymsRepository implements GymsRepository {
     const gym = this.gyms.find((gym) => gym.id === id)
 
     return gym || null
+  }
+
+  async searchMany(params: SearchManyParams) {
+    return this.gyms
+      .filter((item) => item.title.includes(params.query))
+      .slice((params.page - 1) * 20, params.page * 20)
   }
 
   async create(data: Prisma.GymCreateInput) {
