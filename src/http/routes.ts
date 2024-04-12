@@ -3,6 +3,7 @@ import { listUsers } from './controllers/list-users'
 import { register } from './controllers/register'
 import { authenticate } from './controllers/authenticate'
 import { profile } from './controllers/profile'
+import { verifyJwt } from './middlewares/verify-jwt'
 
 export async function appRoutes(app: FastifyInstance) {
   app.get('/users', listUsers)
@@ -11,5 +12,5 @@ export async function appRoutes(app: FastifyInstance) {
 
   // Authenticated
 
-  app.get('/me', profile)
+  app.get('/me', { onRequest: [verifyJwt] }, profile)
 }
