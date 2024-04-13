@@ -31,6 +31,12 @@ app.setErrorHandler((error, _, reply) => {
       .send({ message: 'Validation error.', issues: error.format() })
   }
 
+  if (error.code === 'FST_JWT_NO_AUTHORIZATION_IN_COOKIE') {
+    return reply
+      .status(401)
+      .send({ message: 'Invalid JWT token.', code: error.code })
+  }
+
   if (env.NODE_ENV !== 'production') {
     console.error(error)
   } else {
