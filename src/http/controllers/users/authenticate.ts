@@ -28,7 +28,7 @@ export async function authenticate(
       },
     )
 
-    return reply.status(200).send({ user, token })
+    return reply.send({ user, token })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: err.message })
